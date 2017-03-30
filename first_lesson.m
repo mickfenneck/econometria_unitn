@@ -53,4 +53,13 @@ Coeff_OLS = dataset({ols1.tstat.beta,'beta'},...    %1 col.
                 
                 
                 % calcola nella media anche zeri, tolgo zeri da vettore
+                
+                
+%% Esempio: analisi salario individuale 2.5.2
+% semplice test partendo da dati tabella
+%verifichiamo b2=0 e costruiamo la statistica test
+% dividendo la stima del parametro per il suo std err:
+
+stat_test_t = ols1.tstat.beta(2,1)/ols1.tstat.se(2,1);
+
 
