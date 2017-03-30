@@ -61,5 +61,10 @@ Coeff_OLS = dataset({ols1.tstat.beta,'beta'},...    %1 col.
 % dividendo la stima del parametro per il suo std err:
 
 stat_test_t = ols1.tstat.beta(2,1)/ols1.tstat.se(2,1);
+val_critico = 1.96;
 
-
+if stat_test_t > val_critico
+    disp('Rifiuto H0');
+else
+    disp('Non si rifiuta H0');
+end
