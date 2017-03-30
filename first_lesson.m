@@ -68,3 +68,42 @@ if stat_test_t > val_critico
 else
     disp('Non si rifiuta H0');
 end
+
+%intervallo di confidenza
+sx = ols1.tstat.beta(2,1)-val_critico.*ols1.tstat.se(2,1);
+dx = ols1.tstat.beta(2,1)+val_critico.*ols1.tstat.se(2,1);
+
+%% Esempio: analisi salario individuale 2.5.5 (pag26)
+% precedentemente regressione wage=b1+b2male+e
+% L'analisi fin qui considerata non ci permette di affermare che esiste
+% discriminazione tra lavoratori maschi e femmine.
+% Può darsi che anche istruzione e esperienza abbiano un ruolo nella
+% determinazione del salario. Costruiamo una nuova regressione
+
+% wage =  b1 + b2male + b3school + b4exper + e
+
+% Costruiamo il nuovo modello:
+
+Y = WAGE;                       % variabile dipendente
+X = [MALE, SCHOOL, EXPER];      % matrice regressioni
+
+ols2= regstats(Y,X,'linear');
+
+Coeff_OLS21 = dataset({ols2.tstat.beta,'beta'},...    %1 col.
+                      {ols2.tstat.se,'StdErr'},...    %2 col.
+                      {ols2.tstat.t,'tStat'},...      %3 col.
+                      {ols2.tstat.pval,'pValue'});    %4 col.
+                  
+Coeff_OLS22 = dataset({ols2.rsquare,'R_square'},...
+                      {ols2.adjrsquare,'R_square_adj'},...
+                      {ols2.fstat.f,'F'});
+                  
+                  
+% Calcoliamo la statistica f per stabilire quale fra i due modelli ols1 e
+% ols2 sia il migliore
+n_donne = i_donne-1;                %sistemo indice
+n_uomini = i_uomini-1;              %togliendo successivo
+
+stat_f = ((ols2.rsquare-ols1.rsquare)./2)./...
+         ((1-ols2.rsquare)/(n_donne+n_uomini-4));
+         

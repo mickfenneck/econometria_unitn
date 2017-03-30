@@ -1,0 +1,276 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>first_lesson</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-03-30"><meta name="DC.source" content="first_lesson.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Esercitazione 1</a></li><li><a href="#2">Esempio 2.1.3</a></li><li><a href="#3">altra roba</a></li><li><a href="#4">Esempio: analisi salario individuale 2.5.2</a></li><li><a href="#5">Esempio: analisi salario individuale 2.5.5 (pag26)</a></li></ul></div><h2 id="1">Esercitazione 1</h2><pre>Carichiamo i dati con un comando load</pre><pre class="codeinput">clear
+load <span class="string">data</span>
+</pre><h2 id="2">Esempio 2.1.3</h2><pre class="codeinput"><span class="comment">%approssimioamo i salari con una combinazione lineare della costante e di</span>
+<span class="comment">%una variabile dummy che indice se l'individuo &egrave; uomo o donna</span>
+<span class="comment">%(approccio OLS) wage = beta1+beta2*male</span>
+
+ols1=regstats(WAGE,MALE,<span class="string">'linear'</span>);
+
+ols1.beta
+
+<span class="comment">%Calcoliamo le medie dei salari di uomini e donne</span>
+<span class="comment">% sappiamo che la miglior approssimazione del salario di una donna &egrave;</span>
+<span class="comment">% 5,15=5,15+0*1,17</span>
+
+salario_tutti = [WAGE MALE];
+[n_righe, n_colonne]=size(salario_tutti);
+<span class="comment">%trovo numero uomini/donne</span>
+<span class="comment">%n_uomini = find(salario_tutti(2)&gt;0);</span>
+<span class="comment">%n_donne = n_righe - n_uomini;</span>
+<span class="comment">%istanzio vettori</span>
+<span class="comment">%salario_donne = zeros(n_donne,1);</span>
+<span class="comment">%salario_uomini = zeros(n_uomini,1);</span>
+
+i_donne = 1;
+i_uomini = 1;
+<span class="keyword">for</span> i=1:n_righe
+    <span class="keyword">if</span> salario_tutti(i,2)== 0   <span class="comment">%donne</span>
+        salario_donne(i_donne) = salario_tutti(i,1);
+        i_donne = i_donne + 1;
+    <span class="keyword">else</span>
+        salario_uomini(i_uomini) = salario_tutti(i,1);
+        i_uomini = i_uomini + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">%donne = find(salario_donne&gt;0);</span>
+<span class="comment">%uomini = find(salario_uomini&gt;0);</span>
+
+salario_medio_donne = mean(salario_donne);
+salario_medio_uomini = mean(salario_uomini);
+</pre><pre class="codeoutput">
+ans =
+
+    5.1469
+    1.1661
+
+</pre><h2 id="3">altra roba</h2><pre class="codeinput">Coeff_OLS = dataset({ols1.tstat.beta,<span class="string">'beta'</span>},<span class="keyword">...</span><span class="comment">    %1 col.</span>
+                    {ols1.tstat.se,<span class="string">'StdErr'</span>},<span class="keyword">...</span><span class="comment">    %2 col.</span>
+                    {ols1.tstat.t,<span class="string">'tStat'</span>},<span class="keyword">...</span><span class="comment">      %3 col.</span>
+                    {ols1.tstat.pval,<span class="string">'pValue'</span>});    <span class="comment">%4 col.</span>
+
+
+                <span class="comment">% calcola nella media anche zeri, tolgo zeri da vettore</span>
+</pre><h2 id="4">Esempio: analisi salario individuale 2.5.2</h2><p>semplice test partendo da dati tabella</p><pre class="codeinput"><span class="comment">%verifichiamo b2=0 e costruiamo la statistica test</span>
+<span class="comment">% dividendo la stima del parametro per il suo std err:</span>
+
+stat_test_t = ols1.tstat.beta(2,1)/ols1.tstat.se(2,1);
+val_critico = 1.96;
+
+<span class="keyword">if</span> stat_test_t &gt; val_critico
+    disp(<span class="string">'Rifiuto H0'</span>);
+<span class="keyword">else</span>
+    disp(<span class="string">'Non si rifiuta H0'</span>);
+<span class="keyword">end</span>
+
+<span class="comment">%intervallo di confidenza</span>
+sx = ols1.tstat.beta(2,1)-val_critico.*ols1.tstat.se(2,1);
+dx = ols1.tstat.beta(2,1)+val_critico.*ols1.tstat.se(2,1);
+</pre><pre class="codeoutput">Rifiuto H0
+</pre><h2 id="5">Esempio: analisi salario individuale 2.5.5 (pag26)</h2><p>precedentemente regressione wage=b1+b2male+e L'analisi fin qui considerata non ci permette di affermare che esiste discriminazione tra lavoratori maschi e femmine. Pu&ograve; darsi che anche istruzione e esperienza abbiano un ruolo nella determinazione del salario. Costruiamo una nuova regressione</p><pre class="codeinput"><span class="comment">% wage =  b1 + b2male + b3school + b4exper + e</span>
+
+<span class="comment">% Costruiamo il nuovo modello:</span>
+
+Y = WAGE;                       <span class="comment">% variabile dipendente</span>
+X = [MALE, SCHOOL, EXPER];      <span class="comment">% matrice regressioni</span>
+
+ols2= regstats(Y,X,<span class="string">'linear'</span>);
+
+Coeff_OLS21 = dataset({ols2.tstat.beta,<span class="string">'beta'</span>},<span class="keyword">...</span><span class="comment">    %1 col.</span>
+                      {ols2.tstat.se,<span class="string">'StdErr'</span>},<span class="keyword">...</span><span class="comment">    %2 col.</span>
+                      {ols2.tstat.t,<span class="string">'tStat'</span>},<span class="keyword">...</span><span class="comment">      %3 col.</span>
+                      {ols2.tstat.pval,<span class="string">'pValue'</span>});    <span class="comment">%4 col.</span>
+
+Coeff_OLS22 = dataset({ols2.rsquare,<span class="string">'R_square'</span>},<span class="keyword">...</span>
+                      {ols2.adjrsquare,<span class="string">'R_square_adj'</span>},<span class="keyword">...</span>
+                      {ols2.fstat.f,<span class="string">'F'</span>});
+
+
+<span class="comment">% Calcoliamo la statistica f per stabilire quale fra i due modelli ols1 e</span>
+<span class="comment">% ols2 sia il migliore</span>
+n_donne = i_donne-1;                <span class="comment">%sistemo indice</span>
+n_uomini = i_uomini-1;              <span class="comment">%togliendo successivo</span>
+
+stat_f = ((ols2.rsquare-ols1.rsquare)./2)./<span class="keyword">...</span>
+         ((1-ols2.rsquare)/(n_donne+n_uomini-4));
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Esercitazione 1
+%  Carichiamo i dati con un comando load
+
+clear
+load data
+
+%% Esempio 2.1.3
+%approssimioamo i salari con una combinazione lineare della costante e di
+%una variabile dummy che indice se l'individuo è uomo o donna
+%(approccio OLS) wage = beta1+beta2*male
+
+ols1=regstats(WAGE,MALE,'linear');
+
+ols1.beta
+
+%Calcoliamo le medie dei salari di uomini e donne
+% sappiamo che la miglior approssimazione del salario di una donna è
+% 5,15=5,15+0*1,17
+
+salario_tutti = [WAGE MALE];
+[n_righe, n_colonne]=size(salario_tutti);
+%trovo numero uomini/donne
+%n_uomini = find(salario_tutti(2)>0);
+%n_donne = n_righe - n_uomini;
+%istanzio vettori
+%salario_donne = zeros(n_donne,1);
+%salario_uomini = zeros(n_uomini,1);
+
+i_donne = 1;
+i_uomini = 1;
+for i=1:n_righe
+    if salario_tutti(i,2)== 0   %donne
+        salario_donne(i_donne) = salario_tutti(i,1);
+        i_donne = i_donne + 1;
+    else
+        salario_uomini(i_uomini) = salario_tutti(i,1);
+        i_uomini = i_uomini + 1;
+    end
+end
+
+%donne = find(salario_donne>0);
+%uomini = find(salario_uomini>0);
+
+salario_medio_donne = mean(salario_donne);
+salario_medio_uomini = mean(salario_uomini);
+
+%% altra roba
+
+Coeff_OLS = dataset({ols1.tstat.beta,'beta'},...    %1 col.
+                    {ols1.tstat.se,'StdErr'},...    %2 col.
+                    {ols1.tstat.t,'tStat'},...      %3 col.
+                    {ols1.tstat.pval,'pValue'});    %4 col.
+                
+                
+                % calcola nella media anche zeri, tolgo zeri da vettore
+                
+                
+%% Esempio: analisi salario individuale 2.5.2
+% semplice test partendo da dati tabella
+%verifichiamo b2=0 e costruiamo la statistica test
+% dividendo la stima del parametro per il suo std err:
+
+stat_test_t = ols1.tstat.beta(2,1)/ols1.tstat.se(2,1);
+val_critico = 1.96;
+
+if stat_test_t > val_critico
+    disp('Rifiuto H0');
+else
+    disp('Non si rifiuta H0');
+end
+
+%intervallo di confidenza
+sx = ols1.tstat.beta(2,1)-val_critico.*ols1.tstat.se(2,1);
+dx = ols1.tstat.beta(2,1)+val_critico.*ols1.tstat.se(2,1);
+
+%% Esempio: analisi salario individuale 2.5.5 (pag26)
+% precedentemente regressione wage=b1+b2male+e
+% L'analisi fin qui considerata non ci permette di affermare che esiste
+% discriminazione tra lavoratori maschi e femmine.
+% Può darsi che anche istruzione e esperienza abbiano un ruolo nella
+% determinazione del salario. Costruiamo una nuova regressione
+
+% wage =  b1 + b2male + b3school + b4exper + e
+
+% Costruiamo il nuovo modello:
+
+Y = WAGE;                       % variabile dipendente
+X = [MALE, SCHOOL, EXPER];      % matrice regressioni
+
+ols2= regstats(Y,X,'linear');
+
+Coeff_OLS21 = dataset({ols2.tstat.beta,'beta'},...    %1 col.
+                      {ols2.tstat.se,'StdErr'},...    %2 col.
+                      {ols2.tstat.t,'tStat'},...      %3 col.
+                      {ols2.tstat.pval,'pValue'});    %4 col.
+                  
+Coeff_OLS22 = dataset({ols2.rsquare,'R_square'},...
+                      {ols2.adjrsquare,'R_square_adj'},...
+                      {ols2.fstat.f,'F'});
+                  
+                  
+% Calcoliamo la statistica f per stabilire quale fra i due modelli ols1 e
+% ols2 sia il migliore
+n_donne = i_donne-1;                %sistemo indice
+n_uomini = i_uomini-1;              %togliendo successivo
+
+stat_f = ((ols2.rsquare-ols1.rsquare)./2)./...
+         ((1-ols2.rsquare)/(n_donne+n_uomini-4));
+         
+##### SOURCE END #####
+--></body></html>
