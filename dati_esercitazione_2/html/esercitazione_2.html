@@ -1,0 +1,466 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>esercitazione_2</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-04-06"><meta name="DC.source" content="esercitazione_2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">STIMA DEL TEST DEL CAPM (Paragrafo 2.7.2)</a></li><li><a href="#2">Test di ipotesi</a></li></ul></div><h2 id="1">STIMA DEL TEST DEL CAPM (Paragrafo 2.7.2)</h2><p>carichiamo i dati</p><pre class="codeinput">clear
+load <span class="string">DATI_CAPM</span>
+
+<span class="comment">% Cerchiamo di riprodurre i dati della tabella a pagina 36</span>
+<span class="comment">% costruiamo le regressioni del CAPM (senza intercetta) per i 3 protafogli</span>
+<span class="comment">% settoriali (alimentari, beni durevoli e costruzioni).</span>
+
+<span class="comment">%TABELLA 1: regressione del CAPM (senza intercetta)</span>
+
+ols_alimentari = regstats((RFOOD),(RMRF),1); <span class="comment">% 1 toglie l'intercetta</span>
+ols_beni_durevoli = regstats((RDUR),(RMRF),1);
+ols_costruzioni = regstats((RCON),(RMRF),1);
+
+<span class="comment">% estraiamo i dati fondamentali da ogni regressione</span>
+<span class="comment">% beta, std err, R2</span>
+
+tab_a = dataset({ols_alimentari.tstat.beta,<span class="string">'Coeff'</span>}, <span class="keyword">...</span>
+                {ols_alimentari.tstat.se,<span class="string">'Std_Err'</span>}, <span class="keyword">...</span>
+                {ols_alimentari.rsquare,<span class="string">'R_square'</span>});
+
+tab_b = dataset({ols_beni_durevoli.tstat.beta,<span class="string">'Coeff'</span>}, <span class="keyword">...</span>
+                {ols_beni_durevoli.tstat.se,<span class="string">'Std_Err'</span>}, <span class="keyword">...</span>
+                {ols_beni_durevoli.rsquare,<span class="string">'R_square'</span>});
+
+tab_c = dataset({ols_costruzioni.tstat.beta,<span class="string">'Coeff'</span>}, <span class="keyword">...</span>
+                {ols_costruzioni.tstat.se,<span class="string">'Std_Err'</span>}, <span class="keyword">...</span>
+                {ols_costruzioni.rsquare,<span class="string">'R_square'</span>});
+
+<span class="comment">% Nel momento in cui la stima non contiene l'intercetta regstats perde di</span>
+<span class="comment">% precisione.</span>
+
+<span class="comment">%Usiamo la funzione lm</span>
+
+<span class="comment">%Regressione alimentari</span>
+tbl = table(RMRF,RFOOD);
+ols_alimentari_lm = fitlm(tbl, <span class="string">'RFOOD~RMRF'</span>, <span class="string">'Intercept'</span>, false);
+
+beta_a = ols_alimentari_lm.Coefficients.Estimate;
+se_a = ols_alimentari_lm.Coefficients.SE;
+R2_a = ols_alimentari_lm.Rsquared.Ordinary;
+
+tab_a_lm = dataset({beta_a,<span class="string">'beta'</span>}, {se_a,<span class="string">'StdErr'</span>}, {R2_a, <span class="string">'Rsquared'</span>});
+<span class="comment">%Regressione beni</span>
+tbl = table(RMRF,RDUR);
+ols_durevoli_lm = fitlm(tbl, <span class="string">'RDUR~RMRF'</span>, <span class="string">'Intercept'</span>, false);
+
+beta_b = ols_durevoli_lm.Coefficients.Estimate;
+se_b = ols_durevoli_lm.Coefficients.SE;
+R2_b = ols_durevoli_lm.Rsquared.Ordinary;
+
+tab_b_lm = dataset({beta_b,<span class="string">'beta'</span>}, {se_b,<span class="string">'StdErr'</span>}, {R2_b, <span class="string">'Rsquared'</span>});
+
+<span class="comment">%Regressione costruzioni</span>
+tbl = table(RMRF,RCON);
+ols_costruzioni_lm = fitlm(tbl, <span class="string">'RCON~RMRF'</span>, <span class="string">'Intercept'</span>, false);
+
+beta_c = ols_costruzioni_lm.Coefficients.Estimate;
+se_c = ols_costruzioni_lm.Coefficients.SE;
+R2_c = ols_costruzioni_lm.Rsquared.Ordinary;
+
+tab_c_lm = dataset({beta_c,<span class="string">'beta'</span>}, {se_c,<span class="string">'StdErr'</span>}, {R2_c, <span class="string">'Rsquared'</span>});
+
+<span class="comment">% Test di significativit&agrave; per i 3 beta</span>
+test_a = ols_alimentari_lm.Coefficients;
+test_b = ols_durevoli_lm.Coefficients;
+test_c = ols_costruzioni_lm.Coefficients;
+
+test_a
+test_b
+test_c
+
+<span class="comment">% I beta sono significativi</span>
+</pre><pre class="codeoutput">
+test_a = 
+
+            Estimate       SE       tStat       pValue   
+            ________    ________    ______    ___________
+
+    RMRF    0.79038     0.028397    27.833    9.9513e-105
+
+
+test_b = 
+
+            Estimate       SE       tStat       pValue   
+            ________    ________    ______    ___________
+
+    RMRF    1.1126      0.028953    38.428    2.2368e-153
+
+
+test_c = 
+
+            Estimate       SE       tStat     pValue  
+            ________    ________    _____    _________
+
+    RMRF    1.1561      0.025148    45.97    2.08e-184
+
+</pre><h2 id="2">Test di ipotesi</h2><p>testiamo l'ipotesi H0: beta = 1, ovvero vogliamo verificare se l'extra rendimento di mercato dell'1% porta ad un parti extra rendimento del titolo dell'1%</p><pre class="codeinput">th_1 = (beta_a-1)/se_a;
+th_2 = (beta_b-1)/se_b;
+th_3 = (beta_c-1)/se_c;
+
+th_1
+th_2
+th_3
+
+<span class="comment">% verifica a validit&agrave; regressione CAPM: aggiungiamo l'intercetta. Se</span>
+<span class="comment">% l'intercetta &egrave; significativa il CAPM non &egrave; valido.</span>
+
+
+<span class="comment">%Regressione alimentari</span>
+tbl = table(RMRF,RFOOD);
+ols_alimentari_lm_int = fitlm(tbl, <span class="string">'RFOOD~RMRF'</span>, <span class="string">'Intercept'</span>, true);
+
+beta_a_int = ols_alimentari_lm_int.Coefficients.Estimate;
+se_a_int = ols_alimentari_lm_int.Coefficients.SE;
+R2_a_int = ols_alimentari_lm_int.Rsquared.Ordinary;
+
+tab_a_lm_int = dataset({beta_a_int(1,1),<span class="string">'beta_int'</span>}, <span class="keyword">...</span>
+                       {se_a_int(1,1),<span class="string">'StdErr_int'</span>}, <span class="keyword">...</span>
+                       {R2_a_int(1,1), <span class="string">'Rsquared_int'</span>});
+
+
+<span class="comment">%Regressione beni</span>
+tbl = table(RMRF,RDUR);
+ols_durevoli_lm_int = fitlm(tbl, <span class="string">'RDUR~RMRF'</span>, <span class="string">'Intercept'</span>, true);
+
+beta_b_int = ols_durevoli_lm_int.Coefficients.Estimate;
+se_b_int = ols_durevoli_lm_int.Coefficients.SE;
+R2_b_int = ols_durevoli_lm_int.Rsquared.Ordinary;
+
+tab_b_lm_int = dataset({beta_b_int(1,1),<span class="string">'beta_int'</span>}, <span class="keyword">...</span>
+                       {se_b_int(1,1),<span class="string">'StdErr_int'</span>}, <span class="keyword">...</span>
+                       {R2_b_int(1,1), <span class="string">'Rsquared_int'</span>});
+
+<span class="comment">%Regressione costruzioni</span>
+tbl = table(RMRF,RCON);
+ols_costruzioni_lm_int = fitlm(tbl, <span class="string">'RCON~RMRF'</span>, <span class="string">'Intercept'</span>, true);
+
+beta_c_int = ols_costruzioni_lm_int.Coefficients.Estimate;
+se_c_int = ols_costruzioni_lm_int.Coefficients.SE;
+R2_c_int = ols_costruzioni_lm_int.Rsquared.Ordinary;
+
+tab_c_lm_int = dataset({beta_c_int(1,1),<span class="string">'beta_int'</span>}, <span class="keyword">...</span>
+                       {se_c_int(1,1),<span class="string">'StdErr_int'</span>}, <span class="keyword">...</span>
+                       {R2_c_int(1,1), <span class="string">'Rsquared_int'</span>});
+
+tab_a_lm_int
+tab_b_lm_int
+tab_c_lm_int
+
+<span class="comment">% Test di significativit&agrave; per i 3 beta</span>
+test_a_int = ols_alimentari_lm_int.Coefficients;
+test_b_int = ols_durevoli_lm_int.Coefficients;
+test_c_int = ols_costruzioni_lm_int.Coefficients;
+
+test_a_int
+test_b_int
+test_c_int
+
+th_1_int = (beta_a_int-1)/se_a_int;
+th_2_int = (beta_b_int-1)/se_b_int;
+th_3_int = (beta_c_int-1)/se_c_int;
+
+th_1_int
+th_2_int
+th_3_int
+</pre><pre class="codeoutput">
+th_1 =
+
+   -7.3817
+
+
+th_2 =
+
+    3.8898
+
+
+th_3 =
+
+    6.2056
+
+
+tab_a_lm_int = 
+
+    beta_int    StdErr_int    Rsquared_int
+    0.33918     0.12756       0.59765     
+
+
+tab_b_lm_int = 
+
+    beta_int    StdErr_int    Rsquared_int
+    0.063612    0.13092       0.73942     
+
+
+tab_c_lm_int = 
+
+    beta_int     StdErr_int    Rsquared_int
+    -0.053047    0.11371       0.80307     
+
+
+test_a_int = 
+
+                   Estimate       SE       tStat       pValue   
+                   ________    ________    ______    ___________
+
+    (Intercept)    0.33918      0.12756     2.659      0.0080828
+    RMRF           0.78342     0.028353    27.631    1.0999e-103
+
+
+test_b_int = 
+
+                   Estimate       SE        tStat       pValue   
+                   ________    ________    _______    ___________
+
+    (Intercept)    0.063612     0.13092    0.48589        0.62725
+    RMRF             1.1113    0.029099     38.191    3.2238e-152
+
+
+test_c_int = 
+
+                   Estimate        SE        tStat       pValue   
+                   _________    ________    _______    ___________
+
+    (Intercept)    -0.053047     0.11371    -0.4665        0.64106
+    RMRF              1.1571    0.025275     45.782    1.7143e-183
+
+
+th_1_int =
+
+   -5.1805         0
+   -1.6979         0
+
+
+th_2_int =
+
+   -7.1524         0
+    0.8503         0
+
+
+th_3_int =
+
+   -9.2605         0
+    1.3819         0
+
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% STIMA DEL TEST DEL CAPM (Paragrafo 2.7.2)
+% carichiamo i dati
+
+clear
+load DATI_CAPM
+
+% Cerchiamo di riprodurre i dati della tabella a pagina 36
+% costruiamo le regressioni del CAPM (senza intercetta) per i 3 protafogli
+% settoriali (alimentari, beni durevoli e costruzioni).
+
+%TABELLA 1: regressione del CAPM (senza intercetta)
+
+ols_alimentari = regstats((RFOOD),(RMRF),1); % 1 toglie l'intercetta
+ols_beni_durevoli = regstats((RDUR),(RMRF),1);
+ols_costruzioni = regstats((RCON),(RMRF),1);
+
+% estraiamo i dati fondamentali da ogni regressione
+% beta, std err, R2
+
+tab_a = dataset({ols_alimentari.tstat.beta,'Coeff'}, ...
+                {ols_alimentari.tstat.se,'Std_Err'}, ...
+                {ols_alimentari.rsquare,'R_square'});
+            
+tab_b = dataset({ols_beni_durevoli.tstat.beta,'Coeff'}, ...
+                {ols_beni_durevoli.tstat.se,'Std_Err'}, ...
+                {ols_beni_durevoli.rsquare,'R_square'});
+            
+tab_c = dataset({ols_costruzioni.tstat.beta,'Coeff'}, ...
+                {ols_costruzioni.tstat.se,'Std_Err'}, ...
+                {ols_costruzioni.rsquare,'R_square'});
+            
+% Nel momento in cui la stima non contiene l'intercetta regstats perde di
+% precisione. 
+
+%Usiamo la funzione lm
+
+%Regressione alimentari
+tbl = table(RMRF,RFOOD);
+ols_alimentari_lm = fitlm(tbl, 'RFOOD~RMRF', 'Intercept', false);
+
+beta_a = ols_alimentari_lm.Coefficients.Estimate;
+se_a = ols_alimentari_lm.Coefficients.SE;
+R2_a = ols_alimentari_lm.Rsquared.Ordinary;
+
+tab_a_lm = dataset({beta_a,'beta'}, {se_a,'StdErr'}, {R2_a, 'Rsquared'});
+%Regressione beni
+tbl = table(RMRF,RDUR);
+ols_durevoli_lm = fitlm(tbl, 'RDUR~RMRF', 'Intercept', false);
+
+beta_b = ols_durevoli_lm.Coefficients.Estimate;
+se_b = ols_durevoli_lm.Coefficients.SE;
+R2_b = ols_durevoli_lm.Rsquared.Ordinary;
+
+tab_b_lm = dataset({beta_b,'beta'}, {se_b,'StdErr'}, {R2_b, 'Rsquared'});
+
+%Regressione costruzioni
+tbl = table(RMRF,RCON);
+ols_costruzioni_lm = fitlm(tbl, 'RCON~RMRF', 'Intercept', false);
+
+beta_c = ols_costruzioni_lm.Coefficients.Estimate;
+se_c = ols_costruzioni_lm.Coefficients.SE;
+R2_c = ols_costruzioni_lm.Rsquared.Ordinary;
+
+tab_c_lm = dataset({beta_c,'beta'}, {se_c,'StdErr'}, {R2_c, 'Rsquared'});
+
+% Test di significatività per i 3 beta
+test_a = ols_alimentari_lm.Coefficients;
+test_b = ols_durevoli_lm.Coefficients;
+test_c = ols_costruzioni_lm.Coefficients;
+
+test_a
+test_b
+test_c
+
+% I beta sono significativi
+
+%% Test di ipotesi
+% testiamo l'ipotesi H0: beta = 1, ovvero vogliamo verificare se l'extra
+% rendimento di mercato dell'1% porta ad un parti extra rendimento del
+% titolo dell'1%
+
+th_1 = (beta_a-1)/se_a;
+th_2 = (beta_b-1)/se_b;
+th_3 = (beta_c-1)/se_c;
+
+th_1
+th_2
+th_3
+
+% verifica a validità regressione CAPM: aggiungiamo l'intercetta. Se
+% l'intercetta è significativa il CAPM non è valido.
+
+
+%Regressione alimentari
+tbl = table(RMRF,RFOOD);
+ols_alimentari_lm_int = fitlm(tbl, 'RFOOD~RMRF', 'Intercept', true);
+
+beta_a_int = ols_alimentari_lm_int.Coefficients.Estimate;
+se_a_int = ols_alimentari_lm_int.Coefficients.SE;
+R2_a_int = ols_alimentari_lm_int.Rsquared.Ordinary;
+
+tab_a_lm_int = dataset({beta_a_int(1,1),'beta_int'}, ...
+                       {se_a_int(1,1),'StdErr_int'}, ...
+                       {R2_a_int(1,1), 'Rsquared_int'});
+
+
+%Regressione beni
+tbl = table(RMRF,RDUR);
+ols_durevoli_lm_int = fitlm(tbl, 'RDUR~RMRF', 'Intercept', true);
+
+beta_b_int = ols_durevoli_lm_int.Coefficients.Estimate;
+se_b_int = ols_durevoli_lm_int.Coefficients.SE;
+R2_b_int = ols_durevoli_lm_int.Rsquared.Ordinary;
+
+tab_b_lm_int = dataset({beta_b_int(1,1),'beta_int'}, ...
+                       {se_b_int(1,1),'StdErr_int'}, ...
+                       {R2_b_int(1,1), 'Rsquared_int'});
+
+%Regressione costruzioni
+tbl = table(RMRF,RCON);
+ols_costruzioni_lm_int = fitlm(tbl, 'RCON~RMRF', 'Intercept', true);
+
+beta_c_int = ols_costruzioni_lm_int.Coefficients.Estimate;
+se_c_int = ols_costruzioni_lm_int.Coefficients.SE;
+R2_c_int = ols_costruzioni_lm_int.Rsquared.Ordinary;
+
+tab_c_lm_int = dataset({beta_c_int(1,1),'beta_int'}, ...
+                       {se_c_int(1,1),'StdErr_int'}, ...
+                       {R2_c_int(1,1), 'Rsquared_int'});
+                   
+tab_a_lm_int
+tab_b_lm_int
+tab_c_lm_int
+
+% Test di significatività per i 3 beta
+test_a_int = ols_alimentari_lm_int.Coefficients;
+test_b_int = ols_durevoli_lm_int.Coefficients;
+test_c_int = ols_costruzioni_lm_int.Coefficients;
+
+test_a_int
+test_b_int
+test_c_int
+
+th_1_int = (beta_a_int-1)/se_a_int;
+th_2_int = (beta_b_int-1)/se_b_int;
+th_3_int = (beta_c_int-1)/se_c_int;
+
+th_1_int
+th_2_int
+th_3_int
+
+##### SOURCE END #####
+--></body></html>
